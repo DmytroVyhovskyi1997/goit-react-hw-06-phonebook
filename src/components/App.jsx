@@ -25,8 +25,7 @@ const App = () => {
       if (contactsFromLocalStorage !== 'undefined') {
         const parsedContacts = JSON.parse(contactsFromLocalStorage);
 
-        if (parsedContacts) {
-        }
+       console.log(parsedContacts)
       }
       setFlag(false);
     } else {
