@@ -16,7 +16,7 @@ const App = () => {
 
   const [renderFlag, setFlag] = useState(true);
 
-  useEffect(() => {}, []);
+
 
   useEffect(() => {
     if (renderFlag) {
