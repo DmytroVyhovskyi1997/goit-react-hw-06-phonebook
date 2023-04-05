@@ -1,5 +1,5 @@
-
-import { createReducer, createAction } from '@reduxjs/toolkit';
+import { addContact, delContact, setFilter } from './actions';
+import { createReducer } from '@reduxjs/toolkit';
 
 const initialState = {
   items: [
@@ -11,16 +11,17 @@ const initialState = {
   filter: '',
 };
 
-export const addContact = createAction('contacts/add');
-export const deleteContact = createAction('contacts/delete');
-
-export const contactsReducer = createReducer(initialState, (builder) => {
-  builder
-    .addCase(addContact, (state, action) => {
-      state.items.push(action.payload);
-    })
-    .addCase(deleteContact, (state, action) => {
-      state.items = state.items.filter((item) => item.id !== action.payload);
-    });
+export const contactsReducer = createReducer(initialState, {
+  [addContact]: (state, action) => {
+    state.items.push(action.payload);
+  },
+  [delContact]: (state, action) => {
+    const index = state.items.findIndex(
+      contacts => contacts.id === action.payload
+    );
+    state.items.splice(index, 1);
+  },
+  [setFilter]: (state, action) => {
+    state.filter = action.payload;
+  },
 });
-

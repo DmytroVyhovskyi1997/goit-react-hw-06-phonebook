@@ -1,13 +1,18 @@
-const addContact = ({ name, number }) => {
-    const contact = {
-      name,
-      number,
-      id: nanoid(),
-    };
+import { nanoid } from 'nanoid';
+import { createAction } from '@reduxjs/toolkit';
 
-    if (contacts.findIndex(contact => name === contact.name) !== -1) {
-      alert(`${name} is already in contacts.`);
-    } else {
-      setContacts(prevContacts => [...prevContacts, contact]);
-    }
-  };
+export const addContact = createAction(
+  'contacts/addContact',
+  (nameText, numberText) => {
+    return {
+      type: 'contacts/addContact',
+      payload: {
+        id: nanoid(),
+        name: nameText,
+        number: numberText,
+      },
+    };
+  }
+);
+export const delContact = createAction('contacts/deleteContact');
+export const setFilter = createAction('filter/setFilter');
