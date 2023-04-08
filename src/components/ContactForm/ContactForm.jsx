@@ -1,25 +1,53 @@
-import PropTypes from 'prop-types';
-import React, { useState } from 'react';
-import css from './FormContact.module.css';
+import { useState } from 'react';
+import { nanoid } from 'nanoid';
+import { useDispatch, useSelector } from 'react-redux';
+import { getContacts, addContact } from '../../redux/slice';
+import css from './ContactForm.module.css';
 
-const FormContact = ({ onSubmit }) => {
+export const ContactForm = () => {
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
+  const contacts = useSelector(getContacts);
+  const dispatch = useDispatch();
 
-  const handleChange = e => {
-    const { value, name } = e.currentTarget;
-    name === 'name' ? setName(value) : setNumber(value);
+  const handleChange = event => {
+
+    const { name, value } = event.target;
+    switch (name) {
+      case 'name':
+        setName(value);
+        break;
+      case 'number':
+        setNumber(value);
+        break;
+      default:
+        break;
+    }
   };
 
-  const handleFormSubmit = e => {
-    e.preventDefault();
-    const form = e.currentTarget;
-    onSubmit({ name: name, number: number });
-    form.reset();
+  const handleSubmit = event => {
+    event.preventDefault();
+    const contact = {
+      id: nanoid(),
+      name,
+      number,
+    };
+
+    const enterContacts = contacts.some(
+      contact =>
+        (contact.name === name.toLowerCase() && contact.number === number) ||
+        contact.number === number
+    );
+    enterContacts
+      ? alert(`${name} or ${number} is already in contacts`)
+      : dispatch(addContact(contact));
+
+    setName('');
+    setNumber('');
   };
 
   return (
-    <form className={css.form} onSubmit={handleFormSubmit}>
+    <form className={css.form} onSubmit={handleSubmit}>
       <label className={css.formLabel}>Name </label>
       <input
         className={css.formInput}
@@ -51,8 +79,3 @@ const FormContact = ({ onSubmit }) => {
   );
 };
 
-FormContact.propTypes = {
-  onSubmit: PropTypes.func.isRequired,
-};
-
-export default FormContact;
