@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import { nanoid } from 'nanoid';
 import { useDispatch, useSelector } from 'react-redux';
-import { getContacts, addContact } from '../../redux/slice';
+import { addContact } from 'redux/slice';
+import {getContacts} from 'redux/selectors'
 import css from './ContactForm.module.css';
 
 export const ContactForm = () => {
