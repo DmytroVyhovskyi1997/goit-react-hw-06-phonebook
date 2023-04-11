@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { nanoid } from 'nanoid';
 import { useDispatch, useSelector } from 'react-redux';
 import { addContact } from 'redux/slice';
-import {getContacts} from 'redux/selectors'
+import { getContacts } from 'redux/selectors';
 import css from './ContactForm.module.css';
 
 export const ContactForm = () => {
@@ -12,7 +12,6 @@ export const ContactForm = () => {
   const dispatch = useDispatch();
 
   const handleChange = event => {
-
     const { name, value } = event.target;
     switch (name) {
       case 'name':
@@ -34,14 +33,15 @@ export const ContactForm = () => {
       number,
     };
 
-    const enterContacts = contacts.some(
-      contact =>
-        (contact.name === name.toLowerCase() && contact.number === number) ||
-        contact.number === number
+    const nameExists = contacts.some(
+      contact => contact.name.toLowerCase() === name.toLowerCase()
     );
-    enterContacts
-      ? alert(`${name} or ${number} is already in contacts`)
-      : dispatch(addContact(contact));
+
+    if (nameExists) {
+      alert(`${name} is already in contacts`);
+    } else {
+      dispatch(addContact(contact));
+    }
 
     setName('');
     setNumber('');
